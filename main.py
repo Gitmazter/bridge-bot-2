@@ -3,6 +3,8 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import Constants as keys
 import responses as R
+import asyncio
+from api import endpoint
 
 
 # Commands
@@ -33,11 +35,18 @@ async def error(update : Update, context : ContextTypes.DEFAULT_TYPE):
   print(f"Update {update} caused error {context.error}")
 
 
-if __name__ == '__main__':
+async def sendIt (app) :
+  await app.bot.send_message(chat_id='-4030149233', text='Ayyyy')
+
+def main():
   print("I have arisen!")
+  # Commands
+  api = endpoint()
+  endpoint.start(api)
+
   app = Application.builder().token(keys.API_KEY).build()
 
-  # Commands
+
   app.add_handler(CommandHandler("start", start_command))
   app.add_handler(CommandHandler("help", help_command))
   app.add_handler(CommandHandler("custom", custom_command))
@@ -50,7 +59,7 @@ if __name__ == '__main__':
 
   # Polling Messages
   print("Polling...")
-  app.run_polling(poll_interval=3)
 
+  app.run_polling(poll_interval=3)
 
 main()
